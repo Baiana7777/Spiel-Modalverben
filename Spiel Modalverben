@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deutsch lernen: Modalverben und Konjunktionen</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f9;
+    }
+
+    .game-container {
+      text-align: center;
+      width: 80%;
+      max-width: 600px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #options {
+      margin-top: 20px;
+    }
+
+    .option {
+      background-color: #f9f9f9;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .option:hover {
+      background-color: #e1e1e1;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #result-container {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <h1>Deutsch lernen: Modalverben und Konjunktionen</h1>
+    <div id="question-container">
+      <p id="question-text">Lade Frage...</p>
+      <div id="options">
+        <!-- Antwortmöglichkeiten werden hier eingefügt -->
+      </div>
+    </div>
+    <button id="next-btn" class="hidden">Nächste Frage</button>
+    <div id="result-container" class="hidden">
+      <h2>Ergebnisse</h2>
+      <p id="score">Punkte: 0</p>
+      <button id="restart-btn">Nochmal spielen</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "Ich _______ heute Abend ins Kino gehen.",
+        options: ["konnte", "darf", "soll", "muss", "will"],
+        correct: "will"
+      },
+      {
+        question: "Du _______ das Fenster nicht öffnen, es ist zu kalt.",
+        options: ["kannst", "darfst", "sollst", "musst", "willst"],
+        correct: "darfst"
+      },
+      {
+        question: "Wir _______ morgen einen Ausflug machen.",
+        options: ["können", "dürfen", "wollen", "müssen", "sollen"],
+        correct: "wollen"
+      },
+      {
+        question: "Er _______ die Aufgabe noch nicht erledigt haben.",
+        options: ["konnte", "kann", "will", "soll", "muss"],
+        correct: "muss"
+      },
+      {
+        question: "Ihr _______ das Buch bis morgen zurückbringen.",
+        options: ["dürft", "sollt", "wollt", "könnt", "müsst"],
+        correct: "sollt"
+      },
+      {
+        question: "Sie _______ sich nicht so laut unterhalten.",
+        options: ["sollen", "dürfen", "wollen", "können", "müssen"],
+        correct: "sollen"
+      },
+      {
+        question: "Ich _______ dir helfen, wenn du willst.",
+        options: ["kann", "darf", "wolle", "will", "soll"],
+        correct: "kann"
+      },
+      {
+        question: "Wir _______ morgen früh aufstehen, weil der Zug pünktlich fährt.",
+        options: ["dürfen", "sollen", "wollen", "müssen", "können"],
+        correct: "müssen"
+      },
+      {
+        question: "Sie _______ sich entscheiden, was sie tun möchte.",
+        options: ["konnte", "will", "soll", "darf", "muss"],
+        correct: "will"
+      },
+      {
+        question: "Du _______ das nicht alleine tun.",
+        options: ["kannst", "musst", "darfst", "sollst", "willst"],
+        correct: "musst"
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    const questionText = document.getElementById("question-text");
+    const optionsContainer = document.getElementById("options");
+    const nextBtn = document.getElementById("next-btn");
+    const resultContainer = document.getElementById("result-container");
+    const scoreText = document.getElementById("score");
+    const restartBtn = document.getElementById("restart-btn");
+
+    function loadQuestion() {
+      const question = questions[currentQuestionIndex];
+      questionText.textContent = question.question;
+      optionsContainer.innerHTML = "";
+      
+      question.options.forEach(option => {
+        const optionBtn = document.createElement("button");
+        optionBtn.textContent = option;
+        optionBtn.classList.add("option");
+        optionBtn.onclick = () => checkAnswer(option, question.correct);
+        optionsContainer.appendChild(optionBtn);
+      });
+    }
+
+    function checkAnswer(selected, correct) {
+      if (selected === correct) {
+        score++;
+      }
+      nextBtn.classList.remove("hidden");
+    }
+
+    function nextQuestion() {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        loadQuestion();
+        nextBtn.classList.add("hidden");
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      resultContainer.classList.remove("hidden");
+      scoreText.textContent = `Punkte: ${score}`;
+      document.getElementById("question-container").classList.add("hidden");
+    }
+
+    function restartGame() {
+      score = 0;
+      currentQuestionIndex = 0;
+      resultContainer.classList.add("hidden");
+      document.getElementById("question-container").classList.remove("hidden");
+      loadQuestion();
+      nextBtn.classList.add("hidden");
+    }
+
+    nextBtn.addEventListener("click", nextQuestion);
+    restartBtn.addEventListener("click", restartGame);
+
+    loadQuestion();
+  </script>
+</body>
+</html>
